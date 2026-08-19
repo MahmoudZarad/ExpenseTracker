@@ -1,0 +1,1 @@
+import{O as s,ya as o}from"./chunk-YNMCAGOE.js";var n=(()=>{class t{showMessage(e){this.message.set(e),setTimeout(()=>{this.message.set("")},4e3)}constructor(){this.message=o("")}static{this.\u0275fac=function(i){return new(i||t)}}static{this.\u0275prov=s({token:t,factory:t.\u0275fac,providedIn:"root"})}}return t})();export{n as a};

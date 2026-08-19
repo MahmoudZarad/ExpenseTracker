@@ -1,0 +1,127 @@
+<div class="min-h-screen bg-app-background text-slate-100">
+  <!-- Header -->
+  <header
+    class="flex h-16 items-center justify-between border-b border-app-border bg-app-surface px-6"
+  >
+    <div>
+      <h1 class="text-base font-semibold text-white">
+        Good morning, {{ authService.currentUser()?.name }}
+      </h1>
+      <p class="mt-0.5 text-xs text-slate-400">
+        Here's your financial overview.
+      </p>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <div class="h-6 w-px bg-app-border"></div>
+
+      <button
+        routerLink="/settings"
+        type="button"
+        class="flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition hover:bg-app-light"
+      >
+        <div
+          class="flex h-8 w-8 items-center justify-center rounded-full bg-primary-600 text-xs font-bold text-white"
+        >
+          {{ firstLetter }}
+        </div>
+
+        <div class="hidden text-left sm:block">
+          <p class="text-sm font-medium text-white">
+            {{ authService.currentUser()?.name }}
+          </p>
+
+          <p class="text-[11px] text-slate-400">
+            {{ authService.currentUser()?.email }}
+          </p>
+        </div>
+      </button>
+    </div>
+  </header>
+
+  <div class="flex">
+    <!-- Sidebar -->
+    <aside
+      class="hidden min-h-[calc(100vh-4rem)] w-64 shrink-0 border-r border-app-border bg-app-surface md:block"
+    >
+      <!-- Logo -->
+      <div class="flex h-16 items-center border-b border-app-border px-6">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-3">
+            <img
+              src="assets/ExpenseTrackerPNG.png"
+              alt="ExpenseTracker"
+              class="h-10 w-10 rounded-xl"
+            />
+
+            <span class="text-lg font-semibold text-white">
+              ExpenseTracker
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="p-4">
+        <p
+          class="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500"
+        >
+          Overview
+        </p>
+
+        <div class="space-y-1">
+          <a
+            routerLink="/dashboard"
+            routerLinkActive="bg-primary-500/10 text-primary-400"
+            class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 transition hover:bg-app-light hover:text-white"
+          >
+            <span>◉</span>
+            Dashboard
+          </a>
+
+          <a
+            routerLink="/transactions"
+            routerLinkActive="bg-primary-500/10 text-primary-400"
+            class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 transition hover:bg-app-light hover:text-white"
+          >
+            <span>↔</span>
+            Transactions
+          </a>
+
+          <a
+            routerLink="/budgets"
+            routerLinkActive="bg-primary-500/10 text-primary-400"
+            class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 transition hover:bg-app-light hover:text-white"
+          >
+            <span>◎</span>
+            Budgets
+          </a>
+
+          <a
+            routerLink="/categories"
+            routerLinkActive="bg-primary-500/10 text-primary-400"
+            class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 transition hover:bg-app-light hover:text-white"
+          >
+            <span>◇</span>
+            Categories
+          </a>
+        </div>
+
+        <div class="mt-8 border-t border-app-border pt-4">
+          <a
+            routerLink="/settings"
+            routerLinkActive="bg-primary-500/10 text-primary-400"
+            class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 transition hover:bg-app-light hover:text-white"
+          >
+            <span>⚙</span>
+            Settings
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="min-w-0 flex-1 bg-app-background p-6 lg:p-8">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

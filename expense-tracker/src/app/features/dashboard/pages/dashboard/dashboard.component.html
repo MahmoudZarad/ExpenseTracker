@@ -1,0 +1,34 @@
+<section class="space-y-8">
+  <!-- Page Header -->
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <h1 class="mt-1 text-2xl font-semibold tracking-tight text-white">
+        Your financial overview
+      </h1>
+
+      <p class="mt-1 text-sm text-slate-400">
+        Keep track of your spending and stay within your budget.
+      </p>
+    </div>
+  </div>
+
+  <!-- Balance Overview -->
+  <app-balance-overview [data]="dashboard()" />
+
+  <!-- Analytics -->
+  <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
+    <!-- Spending Overview -->
+    <div
+      class="rounded-2xl border border-app-border bg-app-surface p-6 xl:col-span-2"
+    >
+      <!-- Chart Placeholder -->
+      <app-spending-overview [data]="dashboard()?.spendingSummary ?? []" />
+    </div>
+
+    <!-- Budgets -->
+    <app-budget-overview [data]="dashboard()?.budgetSummary ?? []" />
+  </div>
+
+  <!-- Recent Transactions -->
+  <app-recent-transactions [data]="dashboard()?.recentTransactions ?? []" />
+</section>

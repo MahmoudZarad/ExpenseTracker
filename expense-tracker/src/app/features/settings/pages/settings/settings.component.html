@@ -1,0 +1,182 @@
+<!-- Loading, Success, and Error Messages -->
+@if (isLoading) {
+  <div
+    class="rounded-xl border border-app-border bg-app-surface px-4 py-3 text-sm text-slate-400"
+  >
+    Loading your settings...
+  </div>
+}
+
+@if (successMessage) {
+  <div
+    class="rounded-xl border border-income/20 bg-income/10 px-4 py-3 text-sm text-income"
+  >
+    {{ successMessage }}
+  </div>
+}
+
+@if (errorMessage) {
+  <div
+    class="rounded-xl border border-expense/20 bg-expense/10 px-4 py-3 text-sm text-expense"
+  >
+    {{ errorMessage }}
+  </div>
+}
+
+<!-- Settings Page -->
+
+<section class="space-y-8">
+  <!-- Header -->
+  <div>
+    <p class="text-sm text-slate-400">Application</p>
+
+    <h1 class="mt-1 text-2xl font-semibold tracking-tight text-white">
+      Settings
+    </h1>
+
+    <p class="mt-1 text-sm text-slate-400">
+      Manage your account and application preferences.
+    </p>
+  </div>
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="saveSettings()"
+    class="max-w-3xl space-y-6"
+  >
+    <!-- Profile -->
+    <div class="rounded-2xl border border-app-border bg-app-surface p-6">
+      <div class="mb-6">
+        <h2 class="font-semibold text-white">Profile</h2>
+
+        <p class="mt-1 text-sm text-slate-500">
+          Your basic account information.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <!-- Name -->
+        <div>
+          <label
+            for="name"
+            class="mb-2 block text-sm font-medium text-slate-300"
+          >
+            Name
+          </label>
+
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            class="w-full rounded-lg border border-app-border bg-app-background px-4 py-2.5 text-sm text-white outline-none focus:border-primary-500"
+          />
+
+          @if (form.get("name")?.invalid && form.get("name")?.touched) {
+            <p class="mt-1.5 text-xs text-expense">Name is required.</p>
+          }
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label
+            for="email"
+            class="mb-2 block text-sm font-medium text-slate-300"
+          >
+            Email
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="w-full rounded-lg border border-app-border bg-app-background px-4 py-2.5 text-sm text-white outline-none focus:border-primary-500"
+          />
+
+          @if (form.get("email")?.invalid && form.get("email")?.touched) {
+            <p class="mt-1.5 text-xs text-expense">
+              Please enter a valid email.
+            </p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Preferences -->
+    <div class="rounded-2xl border border-app-border bg-app-surface p-6">
+      <div class="mb-6">
+        <h2 class="font-semibold text-white">Preferences</h2>
+
+        <p class="mt-1 text-sm text-slate-500">
+          Customize how your financial data is displayed.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <!-- Currency -->
+        <div>
+          <label
+            for="currency"
+            class="mb-2 block text-sm font-medium text-slate-300"
+          >
+            Currency
+          </label>
+
+          <select
+            id="currency"
+            formControlName="currency"
+            class="w-full rounded-lg border border-app-border bg-app-background px-4 py-2.5 text-sm text-slate-300 outline-none focus:border-primary-500"
+          >
+            <option value="EGP">🇪🇬 Egyptian Pound (EGP)</option>
+            <option value="USD">🇺🇸 US Dollar (USD)</option>
+            <option value="EUR">🇪🇺 Euro (EUR)</option>
+            <option value="GBP">🇬🇧 British Pound (GBP)</option>
+            <option value="SAR">🇸🇦 Saudi Riyal (SAR)</option>
+            <option value="AED">🇦🇪 UAE Dirham (AED)</option>
+          </select>
+        </div>
+
+        <!-- Language -->
+        <div>
+          <label
+            for="language"
+            class="mb-2 block text-sm font-medium text-slate-300"
+          >
+            Language
+          </label>
+
+          <select
+            id="language"
+            formControlName="language"
+            class="w-full rounded-lg border border-app-border bg-app-background px-4 py-2.5 text-sm text-slate-300 outline-none focus:border-primary-500"
+          >
+            <option value="English">English</option>
+
+            <option value="Arabic">Arabic</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save -->
+    <div class="flex justify-end">
+      <button
+        type="submit"
+        [disabled]="form.invalid || isSaving || isLoading"
+        class="rounded-lg bg-primary-500 px-5 py-2.5 text-sm font-semibold text-app-background transition hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        @if (isSaving) {
+          Saving...
+        } @else {
+          Save changes
+        }
+      </button>
+      <button
+        class="ml-3 rounded-lg bg-primary-500 px-5 py-2.5 text-sm font-semibold text-app-background transition hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
+        type="button"
+        (click)="logout()"
+      >
+        Logout
+      </button>
+    </div>
+  </form>
+</section>

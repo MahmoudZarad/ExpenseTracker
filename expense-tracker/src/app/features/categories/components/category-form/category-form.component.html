@@ -1,0 +1,78 @@
+<div class="space-y-6">
+  <div>
+    <h2 class="text-lg font-semibold text-white">
+      {{ category ? "Edit category" : "Add category" }}
+    </h2>
+
+    <p class="mt-1 text-sm text-slate-500">
+      {{
+        category
+          ? "Update this category."
+          : "Create a category for your transactions."
+      }}
+    </p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-5">
+    <!-- Name -->
+    <div>
+      <label for="name" class="mb-2 block text-sm font-medium text-slate-300">
+        Category name
+      </label>
+
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        placeholder="e.g. Food"
+        class="w-full rounded-lg border border-app-border bg-app-background px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-600 focus:border-primary-500"
+      />
+
+      @if (form.get("name")?.invalid && form.get("name")?.touched) {
+        <p class="mt-1.5 text-xs text-expense">
+          @if (form.get("name")?.errors?.["required"]) {
+            Category name is required.
+          } @else if (form.get("name")?.errors?.["minlength"]) {
+            Category name must be at least 2 characters.
+          }
+        </p>
+      }
+    </div>
+
+    <!-- Type -->
+    <div>
+      <label for="type" class="mb-2 block text-sm font-medium text-slate-300">
+        Type
+      </label>
+
+      <select
+        id="type"
+        formControlName="type"
+        class="w-full rounded-lg border border-app-border bg-app-background px-4 py-2.5 text-sm text-slate-300 outline-none focus:border-primary-500"
+      >
+        <option [value]="TransactionType.Expense">Expense</option>
+
+        <option [value]="TransactionType.Income">Income</option>
+      </select>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex gap-3 pt-2">
+      <button
+        type="button"
+        (click)="cancel()"
+        class="flex-1 rounded-lg border border-app-border px-4 py-2.5 text-sm font-medium text-slate-400 transition hover:bg-app-light hover:text-white"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        [disabled]="form.invalid"
+        class="flex-1 rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-semibold text-app-background transition hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {{ category ? "Save changes" : "Add category" }}
+      </button>
+    </div>
+  </form>
+</div>
