@@ -1,0 +1,23 @@
+<div
+  class="rounded-2xl border border-app-border bg-app-surface p-6 xl:col-span-2"
+>
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="font-semibold text-white">Spending overview</h2>
+
+      <p class="mt-1 text-sm text-slate-500">
+        Your expenses over the last 6 months.
+      </p>
+    </div>
+
+    <span
+      class="rounded-lg border border-app-border px-3 py-2 text-xs font-medium text-slate-400"
+    >
+      Last 6 months
+    </span>
+  </div>
+
+  <div class="mt-6 h-64">
+    <div echarts class="h-full w-full" [options]="chartOptions"></div>
+  </div>
+</div>

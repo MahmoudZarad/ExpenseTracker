@@ -1,0 +1,181 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div>
+    <h2 class="text-lg font-semibold text-white">Add transaction</h2>
+
+    <p class="mt-1 text-sm text-slate-500">Record your income or expense.</p>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-5">
+    <!-- Type -->
+    <div>
+      <p class="mb-2 text-sm font-medium text-slate-300">Transaction type</p>
+
+      <div class="grid grid-cols-2 gap-2">
+        <!-- Expense -->
+        <label
+          class="relative cursor-pointer rounded-lg border px-4 py-3 text-center text-sm transition"
+          [class]="
+            form.value.type === TransactionType.Expense
+              ? 'border-expense bg-expense/10 text-expense'
+              : 'border-app-border text-slate-400'
+          "
+        >
+          <input
+            type="radio"
+            formControlName="type"
+            [value]="TransactionType.Expense"
+            class="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+          />
+
+          Expense
+        </label>
+
+        <!-- Income -->
+        <label
+          class="relative cursor-pointer rounded-lg border px-4 py-3 text-center text-sm transition"
+          [class]="
+            form.value.type === TransactionType.Income
+              ? 'border-income bg-income/10 text-income'
+              : 'border-app-border text-slate-400'
+          "
+        >
+          <input
+            type="radio"
+            formControlName="type"
+            [value]="TransactionType.Income"
+            class="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+          />
+
+          Income
+        </label>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div>
+      <label for="title" class="mb-2 block text-sm font-medium text-slate-300">
+        Title
+      </label>
+
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        placeholder="e.g. Lunch"
+        class="w-full rounded-lg border border-app-border bg-app-background px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-600 focus:border-primary-500"
+      />
+
+      @if (form.get("title")?.invalid && form.get("title")?.touched) {
+        <p class="mt-1.5 text-xs text-expense">
+          @if (form.get("title")?.errors?.["required"]) {
+            Title is required.
+          } @else if (form.get("title")?.errors?.["minlength"]) {
+            Title must be at least 2 characters.
+          } @else if (form.get("title")?.errors?.["maxlength"]) {
+            Title cannot exceed 50 characters.
+          }
+        </p>
+      }
+    </div>
+
+    <!-- Amount -->
+    <div>
+      <label for="amount" class="mb-2 block text-sm font-medium text-slate-300">
+        Amount
+      </label>
+
+      <div class="relative">
+        <span
+          class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-500"
+        >
+          {{ currencyService.currency() }}
+        </span>
+
+        <input
+          id="amount"
+          type="number"
+          formControlName="amount"
+          min="1"
+          step="0.01"
+          placeholder="0.00"
+          class="w-full rounded-lg border border-app-border bg-app-background py-2.5 pl-14 pr-4 text-sm text-white outline-none placeholder:text-slate-600 focus:border-primary-500"
+        />
+      </div>
+
+      @if (form.get("amount")?.invalid && form.get("amount")?.touched) {
+        <p class="mt-1.5 text-xs text-expense">
+          @if (form.get("amount")?.errors?.["required"]) {
+            Amount is required.
+          } @else if (form.get("amount")?.errors?.["min"]) {
+            Amount must be greater than 0.
+          }
+        </p>
+      }
+    </div>
+
+    <!-- Category -->
+    <div>
+      <label
+        for="category"
+        class="mb-2 block text-sm font-medium text-slate-300"
+      >
+        Category
+      </label>
+
+      <select
+        id="category"
+        formControlName="categoryId"
+        class="w-full rounded-lg border border-app-border bg-app-background px-4 py-2.5 text-sm text-slate-300 outline-none focus:border-primary-500"
+      >
+        @for (category of categoriesByType; track category.id) {
+          <option [value]="category.id">
+            {{ category.name }}
+          </option>
+        }
+      </select>
+    </div>
+
+    <!-- Date -->
+    <div>
+      <label for="date" class="mb-2 block text-sm font-medium text-slate-300">
+        Date
+      </label>
+
+      <input
+        id="date"
+        type="date"
+        formControlName="date"
+        class="w-full rounded-lg border border-app-border bg-app-background px-4 py-2.5 text-sm text-white outline-none focus:border-primary-500"
+      />
+    </div>
+
+    <!-- Description -->
+    <div>
+      <label
+        for="description"
+        class="mb-2 block text-sm font-medium text-slate-300"
+      >
+        Description
+      </label>
+
+      <textarea
+        id="description"
+        rows="3"
+        formControlName="description"
+        placeholder="Add a note..."
+        class="w-full resize-none rounded-lg border border-app-border bg-app-background px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-600 focus:border-primary-500"
+      ></textarea>
+    </div>
+
+    <!-- Submit -->
+    <button
+      type="submit"
+      [disabled]="form.invalid"
+      class="w-full rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-semibold text-app-background transition hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      Add transaction
+    </button>
+  </form>
+</div>

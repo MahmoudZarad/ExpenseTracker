@@ -1,0 +1,1 @@
+import{O as e,ya as c}from"./chunk-YNMCAGOE.js";var a=(()=>{class r{constructor(){this.currency=c("EGP")}setCurrency(t){this.currency.set(t)}getCurrency(){return this.currency()}static{this.\u0275fac=function(n){return new(n||r)}}static{this.\u0275prov=e({token:r,factory:r.\u0275fac,providedIn:"root"})}}return r})();export{a};
