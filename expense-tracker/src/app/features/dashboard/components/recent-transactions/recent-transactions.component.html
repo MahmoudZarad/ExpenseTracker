@@ -1,0 +1,66 @@
+<div class="mt-5 rounded-2xl border border-app-border bg-app-surface">
+  <div
+    class="flex items-center justify-between border-b border-app-border px-6 py-5"
+  >
+    <div>
+      <h2 class="font-semibold text-white">Recent transactions</h2>
+
+      <p class="mt-1 text-sm text-slate-500">Your latest financial activity.</p>
+    </div>
+
+    <a
+      routerLink="/transactions"
+      class="text-sm font-medium text-primary-400 transition hover:text-primary-300"
+    >
+      View all
+    </a>
+  </div>
+
+  <div class="divide-y divide-app-border">
+    @for (transaction of data; track transaction.id) {
+      <div class="flex items-center justify-between px-6 py-4">
+        <div class="flex items-center gap-4">
+          @if (transaction.type === 1) {
+            <div
+              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-income/10 text-income"
+            >
+              {{ transaction.title.charAt(0) }}
+            </div>
+          } @else {
+            <div
+              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-expense/10 text-expense"
+            >
+              {{ transaction.title.charAt(0) }}
+            </div>
+          }
+
+          <div>
+            <p class="text-sm font-medium text-slate-200">
+              {{ transaction.title }}
+            </p>
+
+            <p class="mt-1 text-xs text-slate-500">
+              {{ transaction.description }}
+              ·
+              {{ transaction.date | date: "MMM d, y" }}
+            </p>
+          </div>
+        </div>
+
+        @if (transaction.type === 1) {
+          <p class="text-sm font-semibold text-income">
+            + {{ currencyService.currency() }} {{ transaction.amount | number }}
+          </p>
+        } @else {
+          <p class="text-sm font-semibold text-expense">
+            - {{ currencyService.currency() }} {{ transaction.amount | number }}
+          </p>
+        }
+      </div>
+    } @empty {
+      <div class="px-6 py-12 text-center">
+        <p class="text-sm text-slate-400">No transactions yet.</p>
+      </div>
+    }
+  </div>
+</div>

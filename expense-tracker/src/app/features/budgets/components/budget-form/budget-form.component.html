@@ -1,0 +1,85 @@
+<div class="space-y-6">
+  <div>
+    <h2 class="text-lg font-semibold text-white">
+      {{ budget ? "Edit budget" : "Add budget" }}
+    </h2>
+
+    <p class="mt-1 text-sm text-slate-500">
+      {{
+        budget
+          ? "Update your monthly spending limit."
+          : "Set a monthly spending limit for a category."
+      }}
+    </p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-5">
+    <!-- Category -->
+    <div>
+      <label
+        for="category"
+        class="mb-2 block text-sm font-medium text-slate-300"
+      >
+        Category
+      </label>
+
+      <select
+        id="category"
+        formControlName="categoryId"
+        class="w-full rounded-lg border border-app-border bg-app-background px-4 py-2.5 text-sm text-slate-300 outline-none focus:border-primary-500"
+      >
+        @for (category of categories; track category.id) {
+          <option [value]="category.id">
+            {{ category.name }}
+          </option>
+        }
+      </select>
+    </div>
+
+    <!-- Limit -->
+    <div>
+      <label for="limit" class="mb-2 block text-sm font-medium text-slate-300">
+        Monthly limit
+      </label>
+
+      <div class="relative">
+        <span
+          class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-500"
+        >
+          {{ currencyService.currency() }}
+        </span>
+
+        <input
+          id="limit"
+          type="number"
+          min="1"
+          step="0.01"
+          formControlName="limit"
+          placeholder="3000"
+          class="w-full rounded-lg border border-app-border bg-app-background py-2.5 pl-14 pr-4 text-sm text-white outline-none placeholder:text-slate-600 focus:border-primary-500"
+        />
+      </div>
+
+      @if (form.get("limit")?.invalid && form.get("limit")?.touched) {
+        <p class="mt-1.5 text-xs text-expense">
+          @if (form.get("limit")?.errors?.["required"]) {
+            Budget limit is required.
+          } @else if (form.get("limit")?.errors?.["min"]) {
+            Budget limit must be greater than 0.
+          }
+        </p>
+      }
+    </div>
+
+    <!-- Actions -->
+    <div class="flex gap-3 pt-2">
+      <button
+        type="submit"
+        [disabled]="form.invalid"
+        class="flex-1 rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-semibold text-app-background transition hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {{ budget ? "Save changes" : "Add budget" }}
+      </button>
+    </div>
+  </form>
+</div>

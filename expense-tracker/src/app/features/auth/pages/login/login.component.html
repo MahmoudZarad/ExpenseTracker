@@ -1,0 +1,107 @@
+<div class="min-h-screen bg-app-background px-4 py-8 text-white">
+  <div class="flex min-h-[90vh] items-center justify-center">
+    <div class="w-full max-w-md">
+      <!-- Logo -->
+      <!-- Logo -->
+      <div class="mb-8 text-center">
+        <div class="flex items-center justify-center gap-3">
+          <img
+            src="assets/ExpenseTrackerPNG.png"
+            alt="ExpenseTracker"
+            class="h-12 w-12 rounded-xl"
+          />
+
+          <h1 class="text-3xl font-bold tracking-tight">ExpenseTracker</h1>
+        </div>
+
+        <p class="mt-2 text-sm text-slate-400">
+          Manage your money with confidence.
+        </p>
+      </div>
+
+      <!-- Card -->
+      <div
+        class="rounded-2xl border border-app-border bg-app-surface p-6 shadow-2xl sm:p-8"
+      >
+        <div class="mb-6">
+          <h2 class="text-xl font-semibold">Welcome back</h2>
+
+          <p class="mt-1 text-sm text-slate-400">Sign in to your account.</p>
+        </div>
+
+        @if (errorMessage) {
+          <div
+            class="mb-5 rounded-lg border border-expense/20 bg-expense/10 px-4 py-3 text-sm text-expense"
+          >
+            {{ errorMessage }}
+          </div>
+        }
+
+        <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-5">
+          <!-- Email -->
+          <div>
+            <label class="mb-2 block text-sm font-medium text-slate-300">
+              Email
+            </label>
+
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="you@example.com"
+              class="w-full rounded-lg border border-app-border bg-app-light px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-primary-500"
+            />
+
+            @if (form.controls.email.touched && form.controls.email.invalid) {
+              <p class="mt-1 text-xs text-expense">Enter a valid email.</p>
+            }
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label class="mb-2 block text-sm font-medium text-slate-300">
+              Password
+            </label>
+
+            <input
+              type="password"
+              formControlName="password"
+              placeholder="••••••••"
+              class="w-full rounded-lg border border-app-border bg-app-light px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-primary-500"
+            />
+
+            @if (
+              form.controls.password.touched && form.controls.password.invalid
+            ) {
+              <p class="mt-1 text-xs text-expense">Password is required.</p>
+            }
+          </div>
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            [disabled]="isLoading"
+            class="w-full rounded-lg bg-primary-500 px-4 py-3 text-sm font-semibold text-app-background transition hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            @if (isLoading) {
+              Signing in...
+            } @else {
+              Sign in
+            }
+          </button>
+        </form>
+
+        <!-- Register -->
+        <p class="mt-6 text-center text-sm text-slate-500">
+          Don't have an account?
+
+          <a
+            routerLink="/register"
+            class="font-medium text-primary-400 transition hover:text-primary-300"
+          >
+            Create one
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,363 @@
+<section class="space-y-6">
+  <!-- Header -->
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <p class="text-sm text-slate-400">Financial activity</p>
+
+      <h1 class="mt-1 text-2xl font-semibold tracking-tight text-white">
+        Transactions
+      </h1>
+
+      <p class="mt-1 text-sm text-slate-400">
+        Review and manage your income and expenses.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      (click)="openForm()"
+      class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-semibold text-app-background transition hover:bg-primary-600"
+    >
+      <span class="text-lg">+</span>
+      Add transaction
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="rounded-2xl border border-app-border bg-app-surface p-4">
+    <div class="grid grid-cols-1 gap-3 md:grid-cols-3">
+      <!-- Search -->
+      <div class="md:col-span-1">
+        <label for="transaction-search" class="sr-only">
+          Search transactions
+        </label>
+
+        <input
+          id="transaction-search"
+          type="search"
+          placeholder="Search transactions..."
+          [value]="searchTerm()"
+          (input)="onSearch($event)"
+          class="w-full rounded-lg border border-app-border bg-app-background px-4 py-2.5 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-primary-500"
+        />
+      </div>
+
+      <!-- Type -->
+      <select
+        [value]="selectedType()"
+        (change)="onTypeChange($event)"
+        class="rounded-lg border border-app-border bg-app-background px-4 py-2.5 text-sm text-slate-300 outline-none focus:border-primary-500"
+      >
+        <option value="all">All types</option>
+
+        <option value="income">Income</option>
+
+        <option value="expense">Expenses</option>
+      </select>
+
+      <!-- Category -->
+      <select
+        [value]="selectedCategory()"
+        (change)="onCategoryChange($event)"
+        class="rounded-lg border border-app-border bg-app-background px-4 py-2.5 text-sm text-slate-300 outline-none focus:border-primary-500"
+      >
+        <option value="all">All categories</option>
+
+        @for (category of categories(); track category.id) {
+          <option [value]="category.id">
+            {{ category.name }}
+          </option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <!-- Transactions Table -->
+  <div
+    class="overflow-hidden rounded-2xl border border-app-border bg-app-surface"
+  >
+    <!-- Desktop Header -->
+    <div
+      class="hidden border-b border-app-border px-6 py-4 md:grid md:grid-cols-12 md:gap-4"
+    >
+      <p
+        class="col-span-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
+      >
+        Transaction
+      </p>
+
+      <p
+        class="col-span-2 text-xs font-semibold uppercase tracking-wider text-slate-500"
+      >
+        Category
+      </p>
+
+      <p
+        class="col-span-2 text-xs font-semibold uppercase tracking-wider text-slate-500"
+      >
+        Date
+      </p>
+
+      <p
+        class="col-span-2 text-right text-xs font-semibold uppercase tracking-wider text-slate-500"
+      >
+        Amount
+      </p>
+
+      <p
+        class="col-span-2 text-right text-xs font-semibold uppercase tracking-wider text-slate-500"
+      >
+        Action
+      </p>
+    </div>
+
+    <!-- Rows -->
+    <div class="divide-y divide-app-border">
+      @for (transaction of transactions(); track transaction.id) {
+        <!-- Desktop -->
+        <div
+          class="hidden items-center px-6 py-4 md:grid md:grid-cols-12 md:gap-4"
+        >
+          <!-- Transaction -->
+          <div class="col-span-4 flex items-center gap-3">
+            @if (transaction.type === 1) {
+              <div
+                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-income/10 text-sm font-semibold text-income"
+              >
+                {{ transaction.title.charAt(0) }}
+              </div>
+            } @else {
+              <div
+                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-expense/10 text-sm font-semibold text-expense"
+              >
+                {{ transaction.title.charAt(0) }}
+              </div>
+            }
+
+            <div class="min-w-0">
+              <p class="truncate text-sm font-medium text-slate-200">
+                {{ transaction.title }}
+              </p>
+
+              <p class="mt-1 truncate text-xs text-slate-500">
+                {{ transaction.description }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Category -->
+          <div class="col-span-2">
+            <span
+              class="rounded-md bg-app-light px-2.5 py-1 text-xs font-medium text-slate-300"
+            >
+              {{ transaction.categoryName }}
+            </span>
+          </div>
+
+          <!-- Date -->
+          <p class="col-span-2 text-sm text-slate-400">
+            {{ transaction.date | date: "MMM d, y" }}
+          </p>
+
+          <!-- Amount -->
+          @if (transaction.type === 1) {
+            <p class="col-span-2 text-right text-sm font-semibold text-income">
+              + {{ currencyService.currency() }}
+              {{ transaction.amount | number }}
+            </p>
+          } @else {
+            <p class="col-span-2 text-right text-sm font-semibold text-expense">
+              - {{ currencyService.currency() }}
+              {{ transaction.amount | number }}
+            </p>
+          }
+
+          <!-- Actions -->
+          <div class="col-span-2 flex justify-end gap-2">
+            <button
+              type="button"
+              (click)="editTransaction(transaction)"
+              class="rounded-lg px-3 py-2 text-xs font-medium text-slate-400 transition hover:bg-app-light hover:text-white"
+            >
+              Edit
+            </button>
+
+            <button
+              type="button"
+              (click)="deleteTransaction(transaction.id)"
+              class="rounded-lg px-3 py-2 text-xs font-medium text-expense transition hover:bg-expense/10"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile -->
+        <div class="space-y-4 px-4 py-4 md:hidden">
+          <div class="flex items-center justify-between">
+            <div class="flex min-w-0 items-center gap-3">
+              @if (transaction.type === 1) {
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-income/10 font-semibold text-income"
+                >
+                  {{ transaction.title.charAt(0) }}
+                </div>
+              } @else {
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-expense/10 font-semibold text-expense"
+                >
+                  {{ transaction.title.charAt(0) }}
+                </div>
+              }
+
+              <div class="min-w-0">
+                <p class="truncate text-sm font-medium text-slate-200">
+                  {{ transaction.title }}
+                </p>
+
+                <p class="mt-1 truncate text-xs text-slate-500">
+                  {{ transaction.description }}
+                </p>
+              </div>
+            </div>
+
+            @if (transaction.type === 1) {
+              <p class="shrink-0 text-sm font-semibold text-income">
+                + {{ currencyService.currency() }}
+                {{ transaction.amount | number }}
+              </p>
+            } @else {
+              <p class="shrink-0 text-sm font-semibold text-expense">
+                - {{ currencyService.currency() }}
+                {{ transaction.amount | number }}
+              </p>
+            }
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span
+                class="rounded-md bg-app-light px-2 py-1 text-xs text-slate-400"
+              >
+                {{ transaction.categoryName }}
+              </span>
+
+              <span class="text-xs text-slate-500">
+                {{ transaction.date | date: "MMM d, y" }}
+              </span>
+            </div>
+
+            <div class="flex gap-1">
+              <button
+                type="button"
+                (click)="editTransaction(transaction)"
+                class="rounded-lg px-3 py-2 text-xs font-medium text-slate-400 transition hover:bg-app-light hover:text-white"
+              >
+                Edit
+              </button>
+
+              <button
+                type="button"
+                (click)="deleteTransaction(transaction.id)"
+                class="rounded-lg px-3 py-2 text-xs font-medium text-expense transition hover:bg-expense/10"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="px-6 py-16 text-center">
+          <div
+            class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-app-light text-xl"
+          >
+            $
+          </div>
+
+          <p class="mt-4 text-sm font-medium text-slate-300">
+            No transactions found
+          </p>
+
+          <p class="mt-1 text-xs text-slate-500">
+            Try changing your search or filters.
+          </p>
+
+          @if (
+            searchTerm() ||
+            selectedType() !== "all" ||
+            selectedCategory() !== "all"
+          ) {
+            <button
+              type="button"
+              (click)="clearFilters()"
+              class="mt-4 text-xs font-medium text-primary-400 hover:text-primary-300"
+            >
+              Clear filters
+            </button>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="flex items-center justify-between">
+    <p class="text-xs text-slate-500">
+      Showing
+      {{ transactions().length }}
+      of
+      {{ transactions().length }}
+      transactions
+    </p>
+    <div class="flex items-center gap-1">
+      <button
+        type="button"
+        disabled
+        class="rounded-lg border border-app-border px-3 py-2 text-xs text-slate-600"
+      >
+        Previous
+      </button>
+
+      <button
+        type="button"
+        class="rounded-lg bg-primary-500 px-3 py-2 text-xs font-semibold text-app-background"
+      >
+        1
+      </button>
+
+      <button
+        type="button"
+        disabled
+        class="rounded-lg border border-app-border px-3 py-2 text-xs text-slate-600"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</section>
+@if (isFormOpen()) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+  >
+    <!-- Modal -->
+    <div
+      class="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-app-border bg-app-surface p-6 shadow-2xl"
+    >
+      <div class="mb-4 flex justify-end">
+        <button
+          type="button"
+          (click)="closeForm()"
+          class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition hover:bg-app-light hover:text-white"
+          aria-label="Close"
+        >
+          ×
+        </button>
+      </div>
+
+      <app-transaction-form
+        [transaction]="selectedTransaction()"
+        (transactionCreated)="saveTransaction($event)"
+      />
+    </div>
+  </div>
+}
