@@ -6,12 +6,12 @@
 
 A full-stack personal finance application for managing income, expenses, categories, budgets, and financial insights.
 
-Built with **Angular**, **ASP.NET Core**, **Entity Framework Core**, **SQL Server**, and **Docker**.
+Built with **Angular**, **ASP.NET Core**, **Entity Framework Core**, **SQL Server**, and **Docker** **Azure**.
 
 <br>
 
 🌐 **Live Application**  
-https://7d6ff645.expensetracker-bmr.pages.dev/login
+https://expensetracker-bmr.pages.dev/login
 
 📚 **API / Swagger**  
 https://expensetracker-ameadkfeakfhezd6.westus3-01.azurewebsites.net/swagger/index.html
@@ -38,6 +38,13 @@ https://expensetracker-ameadkfeakfhezd6.westus3-01.azurewebsites.net/swagger/ind
 ---
 
 ## 🛠️ Technologies
+
+### DevOps, Cloud & CI/CD
+
+- **Cloud Hosting:** Azure App Service (Backend API) & Cloudflare Pages (Angular Frontend)
+- **CI/CD Automation:** GitHub Actions workflows for automated build and deployment pipelines
+- **Containerization:** Docker & Docker Compose with custom networks and persistent volumes
+- **Security & Infrastructure:** Environment variable injection, secret management, and CORS configuration
 
 ### Frontend
 
@@ -74,6 +81,8 @@ https://expensetracker-ameadkfeakfhezd6.westus3-01.azurewebsites.net/swagger/ind
 - Dependency Injection
 - Middleware
 - Feature-based organization
+- Azure
+- CI/CD and GitHub Actions
 
 ### DevOps & Deployment
 
